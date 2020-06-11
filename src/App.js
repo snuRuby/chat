@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import Api from './api';
+import { SimpleList, InputForm } from './components';
 
-function App() {
+const App = () => {
+  const api = new Api();
+  const [rooms, setRooms] = useState();
+  const loadRooms = async () => {
+    const response = await api.getRooms();
+    setRooms(response);
+  }
+  useEffect(() => {
+    loadRooms();
+    api.signup('hr');
+    setInterval(() => {
+      loadRooms();
+    }, 3000);
+  }, []);
+
+  if (!rooms) {
+    return <p>Loading</p>;
+  }
+  const items = rooms.map(({ name, usersCount }) => `${name} ${usersCount}`);
+  const createRoom = async (name) => {
+    await api.createRoom(name);
+    loadRooms();
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <SimpleList items={items} />
+      <InputForm label="채팅방입니다." onSubmit={createRoom}/>
     </div>
   );
 }
-
 export default App;
+
