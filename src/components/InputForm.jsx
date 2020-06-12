@@ -3,7 +3,6 @@ import { Box, Button, TextField } from '@material-ui/core';
 
 const InputForm = ({ label, onSubmit }) => {
   const [input, setInput] = useState('');
-  console.log(input);
   return (
     <Box>
       <TextField label={label} onChange={({ target: { value } }) => setInput(value)} value={input} />

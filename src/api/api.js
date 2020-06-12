@@ -2,7 +2,7 @@ export default class Api {
     constructor() {
       this.BASE_URL = 'http://snu-chat2.herokuapp.com';
     }
-  
+
     makeHeaders(auth=false) {
       const headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -13,16 +13,26 @@ export default class Api {
     }
 
     signup(name) {
-      return fetch(this.BASE_URL + '/login', {
+      return fetch(this.BASE_URL + '/signup', {
         method: 'POST',
         headers: this.makeHeaders(),
         body: `name=${name}`
-      }).then(res => res.json());
+      })
+      .then(res => res.json())
+      .then(({ key }) => localStorage.setItem('key', key));
     }
+
+    login() {
+      return fetch(this.BASE_URL + '/login', {
+        method: 'POST',
+        headers: this.makeHeaders(true),
+      }).then(res => res.json())
+    }
+
     getRooms() {
       return fetch(this.BASE_URL + '/rooms').then(res => res.json());
     };
-  
+
     createRoom(name) {
       return fetch(this.BASE_URL + '/rooms', {
         method: 'POST',
@@ -30,7 +40,7 @@ export default class Api {
         body: `name=${name}`
       }).then(res => res.json());
     }
-  
+
     getRoom(roomId) {
       return fetch(`${this.BASE_URL}/rooms/${roomId}`).then(res => res.json());
     };
@@ -46,5 +56,5 @@ export default class Api {
         body: `message=${message}`
       }).then(res => res.json());
     }
-    
+
   }
