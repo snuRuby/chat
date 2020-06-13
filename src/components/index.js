@@ -1,12 +1,15 @@
-import SimpleList from './SimpleList';
 import InputForm from './InputForm';
+import SimpleList from './SimpleList';
+import RoomList from './RoomList';
 
 export default {
-  SimpleList,
   InputForm,
-}
+  SimpleList,
+  RoomList,
+};
 
 export {
   SimpleList,
   InputForm,
-}
+  RoomList,
+};
